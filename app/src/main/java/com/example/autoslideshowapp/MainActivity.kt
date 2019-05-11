@@ -25,9 +25,23 @@ class MainActivity : AppCompatActivity() {
         //verを確認
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            //パーミッションを確認
+            Log.d("AAA","ver6")
+            //ver6以上であればパーミッションを確認
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                //許可あれば以下対応
+                //許可あれば対応にはいる
+                Log.d("AAA","許可")
+            } else { //パーミッションが不許可の場合、許可ダイヤログを表示
+                Log.d("AAA","不許可")
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
+            }
+
+
+        } else {
+            //verが5系統以下はダイアログ表示しない
+            Log.d("AAA","ver5以下")
+        }
+
+
 
                 //画像情報取得
                 val resolver = contentResolver
@@ -158,18 +172,19 @@ class MainActivity : AppCompatActivity() {
                     cursor.close()
                 }
 
-
-            } else { //パーミッションが不許可、許可ダイヤログを表示
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
-            }
-
-        } else { //verが5系統以下
-            getContentsInfo()
-        }
     }
 
     private fun getContentsInfo() {
         //画像の情報を取得するメソッド
+        val resolver = contentResolver
+        val cursor = resolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+
 
 
     }
